@@ -1,5 +1,5 @@
 <?php 
-require_once 'entorno.php';
+require_once 'controller/entorno.php';
 
 function renderizarPrincipal(){
     $entorno = Entorno::getInstancia();
