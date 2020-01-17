@@ -1,14 +1,10 @@
 <?php 
+// muestra todos los errores generados por PHP en el navegador
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'principal.php';
-require_once 'eventos.php';
-require_once 'contacto.php';
-require_once 'inicio_sesion.php';
-require_once 'panel_control.php';
-require_once 'perfil.php';
-require_once 'usuarios.php';
-require_once 'modelo/comentarios.php';
-require_once 'modelo/eventos.php';
-require_once 'subir_imagen.php';
 
 // Recibe la URI de htaccess en formato "limpio"
 $uri = $_SERVER['REQUEST_URI'];
@@ -29,16 +25,8 @@ switch($_SERVER['REQUEST_METHOD']){
     case 'GET':
         switch($array_uri[1]){
             case 'principal':
-                if(array_key_exists(2,$array_uri) && $array_uri[2] == "filtro"){
-                    if(array_key_exists(3,$array_uri)){
-                        aplicarFiltro($array_uri[3]);
-                    }
-                    else
-                        http_response_code(404);
-                }
-                else
-                    renderizarPrincipal();
-                break;
+                renderizarPrincipal();
+            break;
 
             case 'evento':
                 if(array_key_exists(2,$array_uri)){
