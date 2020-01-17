@@ -28,15 +28,8 @@ switch($_SERVER['REQUEST_METHOD']){
                 renderizarPrincipal();
             break;
 
-            case 'evento':
-                if(array_key_exists(2,$array_uri)){
-                    if(array_key_exists(3,$array_uri) && $array_uri[3] == 'imprimir')
-                        renderizarEvento((int)$array_uri[2],TRUE);
-                    else
-                        renderizarEvento((int)$array_uri[2],FALSE);
-                }
-                else
-                    http_response_code(404);
+            case 'gestion_productos':
+                renderizarGestionProductos();
                 break;
 
             case 'contacto':
