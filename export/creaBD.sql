@@ -29,7 +29,7 @@ Create table PedidoRealizadoA(
     coste double(8,2) check(coste>=0),
     fechaEntrega date,
     primary key(id_pedido),
-    foreign key(NIF) references proveedor(NIF)
+    foreign key(NIF) references Proveedor(NIF)
 );
 
 create table producto(
@@ -57,7 +57,7 @@ create table incluye(
     cantidad integer check(cantidad>0),
     primary key(id_producto, id_pedido),
     foreign key(id_producto) references recursoDeFabricacion(id_producto),
-    foreign key(id_pedido) references pedidoRealizadoA(id_pedido) on delete cascade
+    foreign key(id_pedido) references PedidoRealizadoA(id_pedido) on delete cascade
 );
 
 create table vende(
