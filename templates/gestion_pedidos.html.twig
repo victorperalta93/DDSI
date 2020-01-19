@@ -13,19 +13,19 @@
     <div class="container"> <a class="navbar-brand" href="/">
         <i class="fa d-inline fa-lg fa-stop-circle"></i>
         <b> GESFA</b>
-      </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar10">
+      </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar10" style="">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar10">
-        <ul class="navbar-nav ml-auto"></ul> <a class="btn navbar-btn ml-md-2 btn-light text-dark" href="/">Página principal</a><a class="btn navbar-btn ml-md-2 text-dark btn-primary" href="/produccion_almacenaje">Producción y Almacenaje</a>
+        <ul class="navbar-nav ml-auto"></ul> <a class="btn navbar-btn ml-md-2 btn-light text-dark" href="/">Página principal</a><a class="btn navbar-btn ml-md-2 text-dark btn-primary" href="/proveedores_pedidos">Proveedores y pedidos</a>
       </div>
     </div>
   </nav>
-  <div class="py-5">
+  <div class="py-5 m-0 my-0 mx-auto text-primary" style="">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="text-center text-body display-4">Gestión de productos</h1>
+          <h1 class="text-center text-body display-4">Gestión de pedidos</h1>
         </div>
       </div>
     </div>
@@ -33,37 +33,61 @@
   <div class="py-2">
     <div class="container">
       <div class="row">
-        <div class="col-md-3" style=""><a class="btn btn-lg btn-primary btn-block" href="#">Añadir producto</a></div>
+        <div class="col-md-3" style=""><a class="btn btn-lg btn-primary btn-block" href="/hacer_pedido">Nuevo pedido</a></div>
       </div>
     </div>
   </div>
   <div class="py-4">
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" style="">
           <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered ">
               <thead class="thead-dark">
                 <tr>
-                  <th>ID producto</th>
-                  <th>Nombre</th>
+                  <th>ID pedido</th>
+                  <th>NIF proveedor</th>
                   <th>Cantidad</th>
-                  <th>Precio</th>
+                  <th>ID producto</th>
+                  <th>Coste</th>
+                  <th>Fecha</th>
                   <th>Acción</th>
                 </tr>
               </thead>
               <tbody>
-                {% for producto in productos %}
                 <tr>
-                  <th>{{producto.id_producto}}</th>
-                  <td>{{producto.nombre}}</td>
-                  <td>{{producto.cantidad}}</td>
+                  <th></th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                   <td></td>
                   <td class="text-center">
-                    <div class="btn-group"> <a href="#" class="btn btn-warning">Modificar</a> <a href="#" class="btn btn-danger">Eliminar</a> </div>
+                    <div class="btn-group"> <a href="#" class="btn btn-primary">Consultar</a> <a href="#" class="btn btn-secondary">Registrar</a> <a href="#" class="btn btn-danger">Anular</a> </div>
                   </td>
                 </tr>
-                {% endfor %}
+                <tr>
+                  <th></th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-center">
+                    <div class="btn-group"> <a href="#" class="btn btn-primary">Consultar</a> <a href="#" class="btn btn-secondary">Registrar</a> <a href="#" class="btn btn-danger">Anular</a></div>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row"></th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-center">
+                    <div class="btn-group"> <a href="#" class="btn btn-primary">Consultar</a> <a href="#" class="btn btn-secondary">Registrar</a> <a href="#" class="btn btn-danger">Anular</a> </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
