@@ -1,4 +1,5 @@
-<?php 
+<?php
+require_once 'models/database.php';
 
 function localizarProducto($id_introducido){
     $db = Database::getInstancia();
@@ -13,41 +14,6 @@ function localizarProducto($id_introducido){
     }
 
     return $producto;
-}
-
-// Registrar llegada  de un pedido realizado
-function registrarLlegada($id_pedido_que_ha_llegado){
-    $db = Database::getInstancia();
-    $mysqli = $db->getConexion();
-
-    $peticion = $mysqli->query("SELECT id_producto, cantidad FROM incluye WHERE id_pedido='$id_pedido_que_ha_llegado';");
-    $producto = array();
-    $almacen = array();
-    $z=0
-    $i=0;
-    $j=0;
-    while($fila = $peticion->fetch_assoc()){
-        $producto[$i] = $fila;
-        $i++;
-    }
-
-    while(j<i){
-        $peticion2 = $mysqli->query("SELECT seccion,estanteria FROM almacen WHERE capacidad>='$producto[$j].cantidad';");
-        while($fila2 = $peticion2->fetch_assoc()){
-            $almacen[$z] = $fila2;
-            $sentencia = $mysqli->prepare("INSERT INTO almacena (seccion, estanteria, id_producto, cantidad)
-             VALUES (seccion_elegida, estanteria_elegida, id_producto_fabricado, cantidad_producto_llegado); VALUES(?,?,?,?)");
-            $sentencia->bind_param("iiii",$almacen[$z].seccion,$almacen[$z].estanteria,$producto[$j].id_producto,$producto[$j].cantidad);
-            $sentencia->execute();
-            $z++;
-        }
-        $j++;
-    }
-
-    $sentencia = $mysqli->prepare("INSERT INTO almacena (seccion, estanteria, id_producto, cantidad)
-     VALUES (seccion_elegida, estanteria_elegida, id_producto_fabricado, cantidad_producto_llegado); VALUES(?,?,?,?)");
-    $sentencia->bind_param("iiii",$producto[0].seccion,$producto[0].estanteria,$id_producto,$cantidad_producida);
-    $sentencia->execute();
 }
 
 function obtenerProductos(){
@@ -100,5 +66,4 @@ function retirarProducto($id_producto,$cantidad){
         $sentencia2->bind_param("i",$cantidad-$producto2[0].cantidad);
         $sentencia2->execute();
     }
-
 }
