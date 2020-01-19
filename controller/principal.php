@@ -20,7 +20,7 @@ function renderizarGestionAlmacenes(){
     $entorno = Entorno::getInstancia();
     $variables = [];
     
-    echo $entorno->renderizar("gestion_almacen.html.twig",$variables);
+    echo $entorno->renderizar("gestion_almacen.html",$variables);
 }
 
 function renderizarGestionProductos(){
@@ -31,7 +31,7 @@ function renderizarGestionProductos(){
         "productos" => $productos,
     ];
 
-    echo $entorno->renderizar("gestion_productos.html.twig",$variables);
+    echo $entorno->renderizar("gestion_productos.html",$variables);
 }
 
 function renderizarGestionProductosAlmacen(){
@@ -50,7 +50,7 @@ function renderizarGestionPedidos(){
     $entorno = Entorno::getInstancia();
     $variables = [];
     
-    echo $entorno->renderizar("gestion_pedidos.html.twig",$variables);
+    echo $entorno->renderizar("gestion_pedidos.html",$variables);
 }
 
 
@@ -78,7 +78,7 @@ function renderizarHacerPedido(){
         "proveedores" => $proveedores
     ];
     
-    echo $entorno->renderizar("hacerpedido.html.twig",$variables);
+    echo $entorno->renderizar("hacerpedido.html",$variables);
 }
 
 function pedirHacerPedido(){
