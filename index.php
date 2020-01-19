@@ -69,53 +69,6 @@ switch($_SERVER['REQUEST_METHOD']){
             case 'pedido':
                 pedirHacerPedido();
                 break;
-            case 'usuarios':
-                if(sizeof($array_uri) == 4){
-                    if($array_uri[3] == 'conectar')
-                        pedirIniciarSesion();
-                    else if($array_uri[3] == 'desconectar')
-                        pedirDesconectar();
-                    else
-                        http_response_code(404);
-                }
-                else if(sizeof($array_uri) == 2)
-                    pedirRegistrarUsuario();
-                else
-                    http_response_code(404);
-                break;
-
-            case 'eventos':
-                if(array_key_exists(4,$array_uri) && $array_uri[3] == 'etiquetas'){
-                    $id_evento = $array_uri[2];
-                    $etiqueta  = $array_uri[4];
-                    var_dump($etiqueta);
-                    addEtiqueta($id_evento,$etiqueta);
-                }
-                else if(array_key_exists(3,$array_uri)){
-                    if($array_uri[3] == 'comentarios'){
-                        $id_evento = $array_uri[2];
-                        $datos = file_get_contents('php://input');
-                        enviarComentario($id_evento,$datos);
-                    }
-                    else if($array_uri[3] == 'imagenes'){
-                        $id_evento = $array_uri[2];
-                        // enviar imagenes
-                    }
-                }
-                else if(sizeof($array_uri) == 2){
-                    $datos = file_get_contents('php://input');
-                    pedirAddEvento($datos);
-                }
-                else
-                    http_response_code(404);
-                break;
-            case 'consulta':
-                $datos = file_get_contents('php://input');
-                $valores = json_decode($datos);
-                $respuesta = buscarEventos($valores->consulta,$valores->tipo);
-                $eventos = json_encode($respuesta);
-                echo $eventos;
-                break;
         }
         break;
     //------------------------------------------------------------------------------------

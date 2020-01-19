@@ -48,8 +48,11 @@ function renderizarGestionProductosAlmacen(){
 
 function renderizarGestionPedidos(){
     $entorno = Entorno::getInstancia();
-    $variables = [];
-    
+    $pedidos = obtenerPedidosRealizados();
+    $variables = [
+        "pedidos" => $pedidos
+    ];
+
     echo $entorno->renderizar("gestion_pedidos.html",$variables);
 }
 

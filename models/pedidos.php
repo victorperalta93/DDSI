@@ -17,7 +17,22 @@ function obtenerInfomacionPedidosRealizados(){
     $db = Database::getInstancia();
     $mysqli = $db->getConexion();
 
-    $peticion = $mysqli->query("SELECT * FROM Proveedor JOIN PedidoRealizadoA JOIN incluye JOIN recursoDeFabricacion");
+    $peticion = $mysqli->query("SELECT * FROM Proveedor NATURAL JOIN PedidoRealizadoA NATURAL JOIN incluye NATURAL JOIN recursoDeFabricacion");
+    $var = array();
+    $i=0;
+    while($fila = $peticion->fetch_assoc()){
+        $var[$i] = $fila;
+        $i++;
+    }
+
+    return $var;
+}
+
+function obtenerPedidosRealizados(){
+    $db = Database::getInstancia();
+    $mysqli = $db->getConexion();
+
+    $peticion = $mysqli->query("SELECT * FROM PedidoRealizadoA;");
     $var = array();
     $i=0;
     while($fila = $peticion->fetch_assoc()){
