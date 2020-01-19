@@ -1,7 +1,13 @@
 <?php 
+// muestra todos los errores generados por PHP en el navegador
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'controller/entorno.php';
 require_once 'models/productos.php';
 require_once 'models/proveedores.php';
+require_once 'models/pedidos.php';
 
 function renderizarPrincipal(){
     $entorno = Entorno::getInstancia();
@@ -73,4 +79,11 @@ function renderizarHacerPedido(){
     ];
     
     echo $entorno->renderizar("hacerpedido.html.twig",$variables);
+}
+
+function pedirHacerPedido(){
+    $datos = file_get_contents('php://input');
+    $valores = json_decode($datos);
+
+    hacerPedido($valores);
 }

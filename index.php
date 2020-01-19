@@ -66,9 +66,8 @@ switch($_SERVER['REQUEST_METHOD']){
     //------------------------------------  POST  ----------------------------------------
     case 'POST':
         switch($array_uri[1]){
-            case 'subir-imagen':
-                $dir = subirImagen($array_uri[2]);
-                echo $dir;
+            case 'pedido':
+                pedirHacerPedido();
                 break;
             case 'usuarios':
                 if(sizeof($array_uri) == 4){

@@ -16,6 +16,15 @@ function localizarProducto($id_introducido){
     return $producto;
 }
 
+function eliminarProducto($id_introducido){
+    $db = Database::getInstancia();
+    $mysqli = $db->getConexion();
+
+    $sentencia = $mysqli->prepare("DELETE FROM producto WHERE id_producto=?");
+    $sentencia->bind_param("i",$id_introducido);
+    $sentencia->execute();
+}
+
 function obtenerProductos(){
     $db = Database::getInstancia();
     $mysqli = $db->getConexion();

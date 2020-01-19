@@ -1,4 +1,8 @@
 <?php
+// muestra todos los errores generados por PHP en el navegador
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 function anularPedido($id_pedido_indicado){
     $db = Database::getInstancia();
@@ -9,16 +13,7 @@ function anularPedido($id_pedido_indicado){
     $sentencia->execute();
 }
 
-function eliminarPedido($id_introducido){
-    $db = Database::getInstancia();
-    $mysqli = $db->getConexion();
-
-    $sentencia = $mysqli->prepare("DELETE FROM producto WHERE id_producto=?");
-    $sentencia->bind_param("i",$id_introducido);
-    $sentencia->execute();
-}
-
-function obtenerInfomacionPedidoRealizado(){
+function obtenerInfomacionPedidosRealizados(){
     $db = Database::getInstancia();
     $mysqli = $db->getConexion();
 
@@ -68,21 +63,40 @@ function registrarLlegada($id_pedido_que_ha_llegado){
     $sentencia->execute();
 }
 
-function hacerPedido($nif_proveedor,$coste,$fecha_entrega,$id_producto,$cantidad){
+function hacerPedido($valores){
     $db = Database::getInstancia();
     $mysqli = $db->getConexion();
 
-    $sentencia = $mysqli->prepare("INSERT INTO PedidoRealizadoA (id_pedido,NIF,coste,fechaEntrega) VALUES(?,?,?,?)");
-    $sentencia->bind_param("isis",NULL,$nif_proveedor,$coste,$fecha_entrega);
-    $sentencia->execute();
+    // obtener NIF del proveedor
+    $peticion = $mysqli->query("SELECT NIF FROM Proveedor WHERE nombre='$valores->proveedor';");
+    $proveedor = array();
+    $i = 0;
+    while($fila = $peticion->fetch_assoc()){
+        $proveedor[$i] = $fila;
+        $i++;
+    }
 
+    $nif_proveedor = $proveedor[0]['NIF'];
+    $coste = 100;
+    $input_date=$valores->fecha;
+    $date=date("Y-m-d",strtotime($input_date));
+
+    // añadir pedido a tabla de pedidos realizados
+    $peticion = $mysqli->query("INSERT INTO PedidoRealizadoA (NIF,coste,fechaEntrega) VALUES($nif_proveedor,$coste,STR_TO_DATE('2020-01-24','%Y-%m-%d'));");
+
+    // obtener el id del pedido añadido
     $peticion = $mysqli->query("SELECT max(id_pedido) FROM PedidoRealizadoA;");
     $producto = array();
+    $i = 0;
     while($fila = $peticion->fetch_assoc()){
         $producto[$i] = $fila;
         $i++;
     }
-    $sentencia2 = $mysqli->prepare("INSERT INTO incluye (id_pedido,id_producto,cantidad) VALUES(?,?,?)");
-    $sentencia2->bind_param("iii",producto[0].id_pedudi,$id_producto,$cantidad);
-    $sentencia2->execute();
+
+    // por cada producto en el pedido, insertar datos en incluye
+    foreach ($valores->productos as $clave => $valor) {
+        $sentencia2 = $mysqli->prepare("INSERT INTO incluye (id_pedido,id_producto,cantidad) VALUES(?,?,?)");
+        $sentencia2->bind_param("iii",$producto[0]['max(id_pedido)'],$clave,$valor);
+        $sentencia2->execute();
+    }
 }
