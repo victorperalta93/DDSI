@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once 'controller/principal.php';
+require_once 'models/productos.php';
 
 // Recibe la URI de htaccess en formato "limpio"
 $uri = $_SERVER['REQUEST_URI'];
@@ -32,24 +33,25 @@ switch($_SERVER['REQUEST_METHOD']){
                 renderizarGestionProductos();
                 break;
 
-            case 'contacto':
-                renderizarContacto();
-                break;
-            
-            case 'iniciar-sesion':
-                renderizarInicioSesion();
+            case 'gestion_pedidos':
+                renderizarGestionPedidos();
                 break;
 
-            case 'panel-control':
-                renderizarPanelControl();
+            case 'gestion_productos_almacen':
+                renderizarGestionProductosAlmacen();
+                break;
+    
+            case 'proveedores_pedidos':
+                renderizarProveedoresPedidos();
                 break;
             
-            case 'perfil':
-                renderizarPerfil();
+            case 'produccion_almacenaje':
+                renderizarProduccionAlmacenaje();
                 break;
 
-            case "palabras":
-                echo palabras();
+
+            case 'hacer_pedido':
+                renderizarHacerPedido();
                 break;
 
             case "favicon.ico":
