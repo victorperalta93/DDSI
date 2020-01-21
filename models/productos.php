@@ -52,6 +52,22 @@ function localizarProducto($id_introducido){
     return $producto;
 }
 
+function mostrarAlmacen(){
+    $db = Database::getInstancia();
+    $mysqli = $db->getConexion();
+
+    $peticion = $mysqli->query("SELECT seccion, estanteria, almacena.id_producto, cantidad, producto.nombre FROM almacena 
+                                INNER JOIN producto ON producto.id_producto = almacena.id_producto;");
+    $producto = array();
+    $i=0;
+    while($fila = $peticion->fetch_assoc()){
+        $producto[$i] = $fila;
+        $i++;
+    }
+
+    return $producto;
+}
+
 function eliminarProducto($id_introducido){
     $db = Database::getInstancia();
     $mysqli = $db->getConexion();
@@ -93,23 +109,15 @@ function obtenerProductosFabricados(){
 }
 
 
-function retirarProducto($id_producto,$cantidad){
+function retirarProducto($seccion,$estanteria,$cantidad,$id_producto){
     $db = Database::getInstancia();
     $mysqli = $db->getConexion();
-    $peticion = $mysqli->query("SELECT seccion,estanteria FROM almacena WHERE id_producto='$id_producto' AND cantidad>='$cantidad';");
-    $producto = array();
-    $i=0;
-    $producto2 = array();
-    $j=0;
-    while($fila = $peticion->fetch_assoc()){
-        $producto[$i] = $fila;
-        $i++;
-    }
-    if($fila!=NULL){
-        $sentencia = $mysqli->prepare("UPDATE almacena SET cantidad=? WHERE seccion='$producto[0].seccion' AND seccion='$producto[0].estanteria'");
-        $sentencia->bind_param("i",$cantidad);
-        $sentencia->execute();
-    }else {
+
+    $sentencia = $mysqli->prepare("UPDATE almacena SET cantidad=cantidad-? WHERE seccion=? AND estanteria=? AND id_producto=?");
+    $sentencia->bind_param("isii",$cantidad,$seccion,$estanteria,$id_producto);
+    $sentencia->execute();
+
+/*     }else {
         $peticion2 = $mysqli->query("SELECT sum(cantidad) FROM almacena WHERE id_producto='$id_producto'';");
         $producto2 = array();
         $j=0;
@@ -127,5 +135,5 @@ function retirarProducto($id_producto,$cantidad){
         $sentencia2 = $mysqli->prepare("UPDATE almacena SET cantidad=? WHERE seccion='$producto2[0].seccion' AND seccion='$producto2[0].estanteria'AND id_producto='$id_producto'");
         $sentencia2->bind_param("i",$cantidad-$producto2[0].cantidad);
         $sentencia2->execute();
-    }
+    }*/
 }

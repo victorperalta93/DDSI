@@ -93,6 +93,14 @@ switch($_SERVER['REQUEST_METHOD']){
                 $id_pedido = $array_uri[2];
                 pedirRegistrarPedido($id_pedido);
                 break;
+
+            case 'almacen':
+                $seccion = $array_uri[2];
+                $estanteria = $array_uri[3];
+                $cantidad = $array_uri[4];
+                $id_producto = $array_uri[5];
+                pedirRetirarAlmacen($seccion,$estanteria,$cantidad,$id_producto);
+            break;
         }
         break;
     //------------------------------------------------------------------------------------

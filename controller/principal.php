@@ -36,7 +36,7 @@ function renderizarGestionProductos(){
 
 function renderizarGestionProductosAlmacen(){
     $entorno = Entorno::getInstancia();
-    $productos = obtenerProductos();
+    $productos = mostrarAlmacen();
 
     $variables = [
         "productos" => $productos,
@@ -130,4 +130,8 @@ function pedirAddProducto(){
 
 function pedirEliminarProducto($id_producto){
     eliminarProducto($id_producto);
+}
+
+function pedirRetirarAlmacen($seccion,$estanteria,$cantidad,$id_producto){
+    retirarProducto($seccion,$estanteria,$cantidad,$id_producto);
 }
