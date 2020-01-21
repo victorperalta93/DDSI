@@ -29,6 +29,10 @@ switch($_SERVER['REQUEST_METHOD']){
                 renderizarPrincipal();
             break;
 
+            case 'add_producto':
+                renderizarAddProducto();
+            break;
+
             case 'gestion_productos':
                 renderizarGestionProductos();
                 break;
@@ -74,6 +78,10 @@ switch($_SERVER['REQUEST_METHOD']){
             case 'pedido':
                 pedirHacerPedido();
                 break;
+            
+            case 'producto':
+                pedirAddProducto();
+            break;
         }
         break;
     //------------------------------------------------------------------------------------
@@ -91,12 +99,17 @@ switch($_SERVER['REQUEST_METHOD']){
 
     //------------------------------------  DELETE  --------------------------------------
     case 'DELETE':
-        if($array_uri[1] == 'pedido'){
-            $id_pedido = $array_uri[2];
-            pedirAnularPedido($id_pedido);
+        switch($array_uri[1]){
+            case 'pedido':
+                $id_pedido = $array_uri[2];
+                pedirAnularPedido($id_pedido);
+            break;
+
+            case 'producto':
+                $id_producto = $array_uri[2];
+                pedirEliminarProducto($id_producto);
+            break;
         }
-        else
-            http_response_code(404);
         break;
     //------------------------------------------------------------------------------------
 } // END switch($_SERVER['REQUEST_METHOD'])

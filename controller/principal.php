@@ -25,7 +25,7 @@ function renderizarGestionAlmacenes(){
 
 function renderizarGestionProductos(){
     $entorno = Entorno::getInstancia();
-    $productos = obtenerProductos();
+    $productos = obtenerProductosFabricados();
 
     $variables = [
         "productos" => $productos,
@@ -84,6 +84,17 @@ function renderizarHacerPedido(){
     echo $entorno->renderizar("hacerpedido.html",$variables);
 }
 
+function renderizarAddProducto(){
+    $entorno = Entorno::getInstancia();
+    $productos = obtenerProductos();
+
+    $variables = [
+        "productos" => $productos
+    ];
+    
+    echo $entorno->renderizar("addproducto.html",$variables);
+}
+
 function pedirHacerPedido(){
     $datos = file_get_contents('php://input');
     $valores = json_decode($datos);
@@ -108,4 +119,15 @@ function pedirConsultarPedido($id_pedido){
     ];
 
     echo $entorno->renderizarBloque("gestion_pedidos.html","consultar",$variables);
+}
+
+function pedirAddProducto(){
+    $datos = file_get_contents('php://input');
+    $valores = json_decode($datos);
+
+    addProducto($valores->nombre, $valores->productos);
+}
+
+function pedirEliminarProducto($id_producto){
+    eliminarProducto($id_producto);
 }
