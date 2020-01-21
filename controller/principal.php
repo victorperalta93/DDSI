@@ -90,3 +90,22 @@ function pedirHacerPedido(){
 
     hacerPedido($valores);
 }
+
+function pedirAnularPedido($id_pedido){
+    anularPedido((int)$id_pedido);
+}
+
+function pedirRegistrarPedido($id_pedido){
+    registrarLlegada($id_pedido);
+}
+
+function pedirConsultarPedido($id_pedido){
+    $datos = consultarPedido($id_pedido);
+
+    $entorno = Entorno::getInstancia();
+    $variables = [
+        "productos" => $datos
+    ];
+
+    echo $entorno->renderizarBloque("gestion_pedidos.html","consultar",$variables);
+}

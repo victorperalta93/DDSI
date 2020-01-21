@@ -4,11 +4,28 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+function consultarPedido($id_pedido){
+    $db = Database::getInstancia();
+    $mysqli = $db->getConexion();
+
+    $peticion = $mysqli->query("SELECT producto.id_producto,id_pedido,cantidad,nombre FROM incluye 
+                                INNER JOIN producto ON incluye.id_producto = producto.id_producto WHERE id_pedido='$id_pedido';");
+
+    $var = array();
+    $i=0;
+    while($fila = $peticion->fetch_assoc()){
+        $var[$i] = $fila;
+        $i++;
+    }
+
+    return $var;
+}
+
 function anularPedido($id_pedido_indicado){
     $db = Database::getInstancia();
     $mysqli = $db->getConexion();
 
-    $sentencia = $mysqli->prepare("DELETE FROM pedidoRealizadoA WHERE id_pedido=?");
+    $sentencia = $mysqli->prepare("DELETE FROM PedidoRealizadoA WHERE id_pedido=?");
     $sentencia->bind_param("i",$id_pedido_indicado);
     $sentencia->execute();
 }
@@ -49,33 +66,32 @@ function registrarLlegada($id_pedido_que_ha_llegado){
     $mysqli = $db->getConexion();
 
     $peticion = $mysqli->query("SELECT id_producto, cantidad FROM incluye WHERE id_pedido='$id_pedido_que_ha_llegado';");
-    $producto = array();
-    $almacen = array();
-    $z=0;
+    $productos = array();
+
     $i=0;
-    $j=0;
     while($fila = $peticion->fetch_assoc()){
-        $producto[$i] = $fila;
+        $productos[$i] = $fila;
         $i++;
     }
 
-    while(j<i){
-        $peticion2 = $mysqli->query("SELECT seccion,estanteria FROM almacen WHERE capacidad>='$producto[$j].cantidad';");
-        while($fila2 = $peticion2->fetch_assoc()){
-            $almacen[$z] = $fila2;
-            $sentencia = $mysqli->prepare("INSERT INTO almacena (seccion, estanteria, id_producto, cantidad)
-             VALUES (seccion_elegida, estanteria_elegida, id_producto_fabricado, cantidad_producto_llegado); VALUES(?,?,?,?)");
-            $sentencia->bind_param("iiii",$almacen[$z].seccion,$almacen[$z].estanteria,$producto[$j].id_producto,$producto[$j].cantidad);
-            $sentencia->execute();
-            $z++;
+    foreach ($productos as $producto){
+        $cantidad = $producto['cantidad'];
+
+        $peticion = $mysqli->query("SELECT seccion,estanteria FROM almacen WHERE capacidad>='$cantidad';");
+        $almacen = array();
+        $i = 0;
+        while($fila = $peticion->fetch_assoc()){
+            $almacen[$i] = $fila;
+            $i++; 
         }
-        $j++;
+
+        $sentencia = $mysqli->prepare("INSERT INTO almacena (seccion, estanteria, id_producto, cantidad) VALUES(?,?,?,?)");
+        $sentencia->bind_param("siii",$almacen[0]['seccion'],$almacen[0]['estanteria'],$producto['id_producto'],$producto['cantidad']);
+        $sentencia->execute();
     }
 
-    $sentencia = $mysqli->prepare("INSERT INTO almacena (seccion, estanteria, id_producto, cantidad)
-     VALUES (seccion_elegida, estanteria_elegida, id_producto_fabricado, cantidad_producto_llegado); VALUES(?,?,?,?)");
-    $sentencia->bind_param("iiii",$producto[0].seccion,$producto[0].estanteria,$id_producto,$cantidad_producida);
-    $sentencia->execute();
+    // anular pedido una vez terminado el registro
+    anularPedido($id_pedido_que_ha_llegado);
 }
 
 function hacerPedido($valores){
@@ -86,13 +102,29 @@ function hacerPedido($valores){
     $peticion = $mysqli->query("SELECT NIF FROM Proveedor WHERE nombre='$valores->proveedor';");
     $proveedor = array();
     $i = 0;
+    $coste=0;
     while($fila = $peticion->fetch_assoc()){
         $proveedor[$i] = $fila;
         $i++;
     }
 
     $nif_proveedor = $proveedor[0]['NIF'];
-    $coste = 100;
+
+    $j = 0 ;
+    foreach ($valores->productos as $clave => $valor) {
+        $peticion2 = $mysqli->query("SELECT precio FROM vende WHERE id_producto='$clave';");
+        $precio = array();
+        $i = 0;
+        while($fila = $peticion2->fetch_assoc()){
+            $precio[$i] = $fila;
+            $i++;
+        }
+
+        $coste = $coste + ($valor*$precio[$j]['precio']);
+        $j++;
+    }
+
+    //$coste = 100;
     $input_date=$valores->fecha;
     $date=date("Y-m-d",strtotime($input_date));
 

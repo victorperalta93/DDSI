@@ -57,10 +57,13 @@
                 <tr>
                   <th>{{pedido.id_pedido}}</th>
                   <td>{{pedido.NIF}}</td>
-                  <td>{{pedido.coste}}</td>
+                  <td>{{pedido.coste}}€</td>
                   <td>{{pedido.fechaEntrega}}</td>
                   <td class="text-center">
-                    <div class="btn-group"> <a href="#" class="btn btn-primary">Consultar</a> <a href="#" class="btn btn-secondary">Registrar</a> <a href="#" class="btn btn-danger">Anular</a> </div>
+                    <div class="btn-group"> 
+                      <a href="#" class="btn btn-primary btn-consultar"  data-toggle="modal" data-target="#exampleModalLong" data-id={{pedido.id_pedido}} id="consultar-{{pedido.id_pedido}}">Consultar</a> 
+                      <a href="#" class="btn btn-secondary btn-registrar" data-id={{pedido.id_pedido}} id="registrar-{{pedido.id_pedido}}">Registrar</a> 
+                      <a href="#" class="btn btn-danger btn-anular"       data-id={{pedido.id_pedido}} id="anular-{{pedido.id_pedido}}">Anular</a> </div>
                   </td>
                 </tr>
                 {% endfor %}
@@ -71,10 +74,54 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Detalles del pedido</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-consultar">
+          {% block consultar %}
+          <div class="table-responsive">
+            <table class="table table-bordered ">
+              <thead class="thead-dark">
+                <tr>
+                  <th>ID producto</th>
+                  <th>nombre</th>
+                  <th>ID pedido</th>
+                  <th>cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for producto in productos %}
+                <tr>
+                  <th>{{producto.id_producto}}</th>
+                  <td>{{producto.nombre}}</td>
+                  <td>{{producto.id_pedido}}</td>
+                  <td>{{producto.cantidad}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endblock %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <pingendo onclick="window.open('https://pingendo.com/', '_blank')" style="cursor:pointer;position: fixed;bottom: 20px;right:20px;padding:4px;background-color: #00b0eb;border-radius: 8px; width:220px;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:14px;color:white">Made with Pingendo Free&nbsp;&nbsp;<img src="https://pingendo.com/site-assets/Pingendo_logo_big.png" class="d-block" alt="Pingendo logo" height="16"></pingendo>
+  <script type="text/javascript" src="js/gestion_pedidos.js"></script>
 </body>
 
 </html>

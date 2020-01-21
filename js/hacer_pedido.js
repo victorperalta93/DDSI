@@ -30,7 +30,9 @@ boton.addEventListener("click", (e) =>{
     request.send(JSON.stringify(obj));
 
     request.onload = function(){
+        console.log(request.response);
         alert("Pedido realizado.");
         window.location.href = "gestion_pedidos";
     }
 });
+
